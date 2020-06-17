@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.128
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{94F05331-460A-42CE-995F-4B909E2C6C19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity", "src\Arity\Arity.csproj", "{75F38B1D-7675-40A7-AB7A-23DD7E50D226}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arity", "src\Arity\Arity.csproj", "{75F38B1D-7675-40A7-AB7A-23DD7E50D226}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.DirectoryCatalog", "src\Arity.DirectoryCatalog\Arity.DirectoryCatalog.csproj", "{20C34400-F8B7-4775-8A64-6D75640C9FBB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.Hosting", "src\Arity.Hosting\Arity.Hosting.csproj", "{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{75F38B1D-7675-40A7-AB7A-23DD7E50D226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,8 +31,35 @@ Global
 		{75F38B1D-7675-40A7-AB7A-23DD7E50D226}.Release|x64.Build.0 = Release|Any CPU
 		{75F38B1D-7675-40A7-AB7A-23DD7E50D226}.Release|x86.ActiveCfg = Release|Any CPU
 		{75F38B1D-7675-40A7-AB7A-23DD7E50D226}.Release|x86.Build.0 = Release|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Debug|x64.Build.0 = Debug|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Debug|x86.Build.0 = Debug|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Release|x64.ActiveCfg = Release|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Release|x64.Build.0 = Release|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Release|x86.ActiveCfg = Release|Any CPU
+		{20C34400-F8B7-4775-8A64-6D75640C9FBB}.Release|x86.Build.0 = Release|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Debug|x64.Build.0 = Debug|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Debug|x86.Build.0 = Debug|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x64.ActiveCfg = Release|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x64.Build.0 = Release|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x86.ActiveCfg = Release|Any CPU
+		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{75F38B1D-7675-40A7-AB7A-23DD7E50D226} = {94F05331-460A-42CE-995F-4B909E2C6C19}
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE1334CE-7ECB-4822-BDB1-C47D82D6222A}
 	EndGlobalSection
 EndGlobal
