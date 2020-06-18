@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -8,37 +7,31 @@ namespace Arity
 {
     public class BootstrapperFactory : IServiceProviderFactory<Bootstrapper>
     {
-        private readonly IConfiguration _configuration;
         private readonly ModuleLoader _moduleLoader;
         private readonly IAssemblyCatalog _assemblyCatalog;
         private readonly BootstrapperFactoryOptions _options;
 
-        private BootstrapperFactory(IConfiguration configuration,
-            ModuleLoader moduleLoader,
+        private BootstrapperFactory(ModuleLoader moduleLoader,
             IAssemblyCatalog assemblyCatalog,
             BootstrapperFactoryOptions options)
         {
-            _configuration = configuration;
             _moduleLoader = moduleLoader;
             _assemblyCatalog = assemblyCatalog;
             _options = options;
         }
 
-        public static BootstrapperFactory Create(IConfiguration configuration,
-            ModuleLoader moduleLoader,
+        public static BootstrapperFactory Create(ModuleLoader moduleLoader,
             IAssemblyCatalog assemblyCatalog,
             BootstrapperFactoryOptions options)
         {
-            return new BootstrapperFactory(configuration, moduleLoader, assemblyCatalog, options);
+            return new BootstrapperFactory(moduleLoader, assemblyCatalog, options);
         }
 
         [UsedImplicitly]
-        public BootstrapperFactory(IConfiguration configuration,
-            ModuleLoader moduleLoader,
+        public BootstrapperFactory(ModuleLoader moduleLoader,
             IAssemblyCatalog assemblyCatalog,
             IOptions<BootstrapperFactoryOptions> options)
         {
-            _configuration = configuration;
             _moduleLoader = moduleLoader;
             _assemblyCatalog = assemblyCatalog;
             _options = options.Value;
@@ -46,7 +39,7 @@ namespace Arity
 
         public Bootstrapper Create(IServiceCollection services)
         {
-            return new Bootstrapper(_moduleLoader, _configuration, services, _assemblyCatalog, _options.EntryModule);
+            return new Bootstrapper(_moduleLoader, services, _assemblyCatalog, _options);
         }
 
         public Bootstrapper CreateBuilder(IServiceCollection services)

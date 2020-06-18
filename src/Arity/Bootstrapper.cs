@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Arity
@@ -11,24 +10,25 @@ namespace Arity
     {
         private readonly ModuleLoader _moduleLoader;
 
-        private readonly IConfiguration _configuration;
         private readonly IServiceCollection _serviceCollection;
         private readonly IAssemblyCatalog _assemblyCatalog;
+        private readonly BootstrapperFactoryOptions _options;
         private readonly string _entryModule;
 
         private readonly Type _lifecycleListenerType = typeof(IRegisterAssemblyTypesListener);
 
-        public Bootstrapper(ModuleLoader moduleLoader,
-            IConfiguration configuration, IServiceCollection serviceCollection,
-            IAssemblyCatalog assemblyCatalog, string entryModule)
+        public Bootstrapper(ModuleLoader moduleLoader, IServiceCollection serviceCollection,
+            IAssemblyCatalog assemblyCatalog, BootstrapperFactoryOptions options)
         {
+            var entryModule = options.EntryModule;
+
             if (entryModule == null)
                 throw new ArgumentNullException(nameof(entryModule));
 
             _moduleLoader = moduleLoader;
-            _configuration = configuration;
             _serviceCollection = serviceCollection;
             _assemblyCatalog = assemblyCatalog;
+            _options = options;
             _entryModule = entryModule;
         }
 
@@ -45,8 +45,10 @@ namespace Arity
         {
             var buildTimeServicesCollection = new ServiceCollection();
 
-            buildTimeServicesCollection.AddSingleton(provider => _configuration);
-            buildTimeServicesCollection.AddOptions();
+            foreach (var action in _options.ConfigureBuildTimeServices)
+            {
+                action(buildTimeServicesCollection);
+            }
 
             var lifecycleListenerTypes = LoadLifecycleListeners(modules.Select(x => x.Type.Assembly).Distinct().ToArray());
 

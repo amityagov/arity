@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,14 @@ namespace Arity
             params Assembly[] assemblies)
         {
             configuration.ServiceCollection.AddSingleton<IAssemblyCatalog>(new StaticAssemblyCatalog(assemblies));
+
+            return configuration;
+        }
+
+        public static IModularityConfiguration ConfigureBootstrapperOptions(this IModularityConfiguration configuration,
+            Action<BootstrapperFactoryOptions> action)
+        {
+            configuration.ServiceCollection.Configure<BootstrapperFactoryOptions>(action);
 
             return configuration;
         }

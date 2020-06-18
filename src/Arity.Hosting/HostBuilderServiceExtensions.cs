@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Arity.Hosting
@@ -13,11 +14,15 @@ namespace Arity.Hosting
             {
                 var moduleLoader = new ModuleLoader(bootstrapperOptions.Validators);
 
-                return BootstrapperFactory.Create(context.Configuration, moduleLoader,
-                    assemblyCatalog, new BootstrapperFactoryOptions
-                    {
-                        EntryModule = bootstrapperOptions.EntryModule
-                    });
+                var options = new BootstrapperFactoryOptions
+                {
+                    EntryModule = bootstrapperOptions.EntryModule
+                };
+
+                options.ConfigureBuildTimeServices.Add(collection => collection.AddSingleton(context.HostingEnvironment));
+                options.ConfigureBuildTimeServices.Add(collection => collection.AddSingleton(context.Configuration));
+
+                return BootstrapperFactory.Create(moduleLoader, assemblyCatalog, options);
             });
         }
     }
