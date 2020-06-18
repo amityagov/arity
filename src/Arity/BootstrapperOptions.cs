@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Arity
 {
-    public class BootstrapOptions
+    public class BootstrapperOptions
     {
         public string EntryModule { get; set; }
 
