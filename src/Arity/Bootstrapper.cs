@@ -12,13 +12,13 @@ namespace Arity
 
         private readonly IServiceCollection _serviceCollection;
         private readonly IAssemblyCatalog _assemblyCatalog;
-        private readonly BootstrapperFactoryOptions _options;
+        private readonly BootstrapperOptions _options;
         private readonly string _entryModule;
 
         private readonly Type _lifecycleListenerType = typeof(IRegisterAssemblyTypesListener);
 
         public Bootstrapper(ModuleLoader moduleLoader, IServiceCollection serviceCollection,
-            IAssemblyCatalog assemblyCatalog, BootstrapperFactoryOptions options)
+            IAssemblyCatalog assemblyCatalog, BootstrapperOptions options)
         {
             var entryModule = options.EntryModule;
 

@@ -8,16 +8,11 @@ namespace Arity.Hosting
     public static class HostBuilderServiceExtensions
     {
         public static IHostBuilder UseBootstrapperFactory(this IHostBuilder builder, IAssemblyCatalog assemblyCatalog,
-            BootstrapperOptions bootstrapperOptions)
+            BootstrapperOptions options)
         {
             return builder.UseServiceProviderFactory(context =>
             {
-                var moduleLoader = new ModuleLoader(bootstrapperOptions.Validators);
-
-                var options = new BootstrapperFactoryOptions
-                {
-                    EntryModule = bootstrapperOptions.EntryModule
-                };
+                var moduleLoader = new ModuleLoader(options.Validators);
 
                 options.ConfigureBuildTimeServices.Add(collection => collection.AddSingleton(context.HostingEnvironment));
                 options.ConfigureBuildTimeServices.Add(collection => collection.AddSingleton(context.Configuration));

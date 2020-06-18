@@ -18,7 +18,7 @@ namespace Arity
         public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection,
             BootstrapperOptions bootstrapperOptions)
         {
-            collection.Configure<BootstrapperFactoryOptions>(x =>
+            collection.Configure<BootstrapperOptions>(x =>
             {
                 x.EntryModule = bootstrapperOptions.EntryModule;
             });

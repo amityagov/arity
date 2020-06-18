@@ -15,9 +15,9 @@ namespace Arity
         }
 
         public static IModularityConfiguration ConfigureBootstrapperOptions(this IModularityConfiguration configuration,
-            Action<BootstrapperFactoryOptions> action)
+            Action<BootstrapperOptions> action)
         {
-            configuration.ServiceCollection.Configure<BootstrapperFactoryOptions>(action);
+            configuration.ServiceCollection.Configure<BootstrapperOptions>(action);
 
             return configuration;
         }
