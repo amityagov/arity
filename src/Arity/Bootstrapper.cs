@@ -16,7 +16,7 @@ namespace Arity
         private readonly IAssemblyCatalog _assemblyCatalog;
         private readonly string _entryModule;
 
-        private readonly Type _lifecycleListenerType = typeof(ILifecycleListener<ModuleLoadPhase>);
+        private readonly Type _lifecycleListenerType = typeof(IRegisterAssemblyTypesListener);
 
         public Bootstrapper(ModuleLoader moduleLoader,
             IConfiguration configuration, IServiceCollection serviceCollection,
@@ -92,16 +92,16 @@ namespace Arity
         private static void RunRegistrations(IServiceCollection targetServiceCollection, ICollection<ModuleMetadata> modules,
             IServiceProvider serviceProvider, string phase)
         {
-            var preBuildLifecycleListeners = serviceProvider.GetServices<ILifecycleListener<ModuleLoadPhase>>().ToArray();
+            var preBuildLifecycleListeners = serviceProvider.GetServices<IRegisterAssemblyTypesListener>().ToArray();
 
             foreach (var descriptors in modules.GroupBy(x => x.Type.Assembly))
             {
                 var assembly = descriptors.Key;
-                var modulesInAssembly = descriptors.Select(x => x.Name).ToArray();
+                var assemblyModules = descriptors.ToArray();
 
                 foreach (var lifecycleListener in preBuildLifecycleListeners)
                 {
-                    lifecycleListener.OnCreated(new ModuleLoadPhase(targetServiceCollection, assembly, modulesInAssembly, phase));
+                    lifecycleListener.OnLoad(new ModuleLoadPhase(targetServiceCollection, assembly, assemblyModules, phase));
                 }
             }
         }

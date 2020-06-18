@@ -1,0 +1,25 @@
+<Project>
+    <PropertyGroup>
+        <Authors>amityagov</Authors>
+        <VersionPrefix>0.0.1.0</VersionPrefix>
+        <Version>$(VersionPrefix)</Version>
+        <FileVersion>$(VersionPrefix)</FileVersion>
+        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.66">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="../../StyleCop/stylecop.json" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <CodeAnalysisRuleSet>../../StyleCop/stylecop.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+</Project>

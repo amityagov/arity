@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Arity
 {
-    public abstract class RegisterAssemblyTypesLifecycleListener : ILifecycleListener<ModuleLoadPhase>
+    public abstract class RegisterAssemblyTypesListener : IRegisterAssemblyTypesListener
     {
         private readonly HashSet<AssemblyMarker> _assemblyMarkers = new HashSet<AssemblyMarker>();
 
-        public void OnCreated(ModuleLoadPhase value)
+        public void OnLoad(ModuleLoadPhase value)
         {
             var (serviceCollection, assembly, modules, phase) = value;
 
@@ -25,7 +25,7 @@ namespace Arity
             Register(serviceCollection, assembly, modules, phase);
         }
 
-        protected virtual void Register(IServiceCollection serviceCollection, Assembly assembly, string[] modules,
+        protected virtual void Register(IServiceCollection serviceCollection, Assembly assembly, ModuleMetadata[] modules,
             string phase)
         {
             if (phase == ModuleLoadPhase.PreBuild)
@@ -39,11 +39,11 @@ namespace Arity
             }
         }
 
-        protected virtual void RegisterPreBuildPhase(IServiceCollection serviceCollection, Assembly assembly, string[] modules)
+        protected virtual void RegisterPreBuildPhase(IServiceCollection serviceCollection, Assembly assembly, ModuleMetadata[] modules)
         {
         }
 
-        protected virtual void RegisterBuildPhase(IServiceCollection serviceCollection, Assembly assembly, string[] modules)
+        protected virtual void RegisterBuildPhase(IServiceCollection serviceCollection, Assembly assembly, ModuleMetadata[] modules)
         {
         }
 

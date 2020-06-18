@@ -13,11 +13,11 @@ namespace Arity
 
         public Assembly Assembly { get; }
 
-        public string[] Modules { get; }
+        public ModuleMetadata[] Modules { get; }
 
         public string Phase { get; }
 
-        public ModuleLoadPhase(IServiceCollection collection, Assembly assembly, string[] modules, string phase)
+        public ModuleLoadPhase(IServiceCollection collection, Assembly assembly, ModuleMetadata[] modules, string phase)
         {
             Collection = collection;
             Assembly = assembly;
@@ -25,7 +25,7 @@ namespace Arity
             Phase = phase;
         }
 
-        public void Deconstruct(out IServiceCollection collection, out Assembly assembly, out string[] modules, out string phase)
+        public void Deconstruct(out IServiceCollection collection, out Assembly assembly, out ModuleMetadata[] modules, out string phase)
         {
             collection = Collection;
             assembly = Assembly;

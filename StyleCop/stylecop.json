@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "indentation": {
+		"useTabs" : false
+    },
+	"orderingRules": {
+		"usingDirectivesPlacement" : "outsideNamespace"		
+    },
+	"namingRules": {
+      "allowedHungarianPrefixes": [
+        "db"
+      ]
+    },
+	"layoutRules": {
+		"newlineAtEndOfFile": "require"
+	}
+  }
+}
