@@ -10,4 +10,8 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.5" />
 		<PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Arity.Abstractions\Arity.Abstractions.csproj" />
+	</ItemGroup>
 </Project>

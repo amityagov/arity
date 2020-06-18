@@ -7,7 +7,7 @@ namespace Arity
     [PublicAPI]
     public static class ServiceCollectionServiceExtensions
     {
-        public static IServiceCollection AddBootstrapper(this IServiceCollection collection, IAssemblyCatalog assemblyCatalog, string entryModule)
+        public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection, IAssemblyCatalog assemblyCatalog, string entryModule)
         {
             return AddBootstrapper(collection, assemblyCatalog, new BootstrapOptions
             {
@@ -15,7 +15,7 @@ namespace Arity
             });
         }
 
-        public static IServiceCollection AddBootstrapper(this IServiceCollection collection,
+        public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection,
              IAssemblyCatalog assemblyCatalog, BootstrapOptions bootstrapOptions)
         {
             collection.Configure<BootstrapperFactoryOptions>(x =>
@@ -32,7 +32,7 @@ namespace Arity
                 collection.AddSingleton<ModuleMetadataValidator>(validator);
             }
 
-            return collection;
+            return new ModularityConfiguration(collection);
         }
     }
 }

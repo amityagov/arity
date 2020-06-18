@@ -13,27 +13,18 @@ namespace Arity
     {
         private const string ViewsAssemblySuffix = ".Views.dll";
 
-        private readonly DirectoryAssemblyCatalogOptions _options;
+        private readonly IOptions<DirectoryAssemblyCatalogOptions> _options;
 
         private readonly ILogger<DirectoryAssemblyCatalog> _logger;
 
         private readonly Lazy<ICollection<Assembly>> _factory;
 
-        private DirectoryAssemblyCatalog(DirectoryAssemblyCatalogOptions options)
+        public DirectoryAssemblyCatalog(IOptions<DirectoryAssemblyCatalogOptions> options, ILogger<DirectoryAssemblyCatalog> logger)
         {
             _options = options;
-            _factory = new Lazy<ICollection<Assembly>>(EnumerateAssemblies);
-        }
-
-        public static DirectoryAssemblyCatalog Create(DirectoryAssemblyCatalogOptions options)
-        {
-            return new DirectoryAssemblyCatalog(options);
-        }
-
-        public DirectoryAssemblyCatalog(IOptions<DirectoryAssemblyCatalogOptions> options, ILogger<DirectoryAssemblyCatalog> logger)
-            : this(options.Value)
-        {
             _logger = logger;
+
+            _factory = new Lazy<ICollection<Assembly>>(EnumerateAssemblies);
         }
 
         private static void EnsureDirectoryExists([NotNull] string path)
@@ -63,9 +54,9 @@ namespace Arity
         private ICollection<Assembly> EnumerateAssemblies()
         {
             var catalogOptions = _options;
-            var path = catalogOptions.BasePath;
+            var path = catalogOptions.Value.BasePath;
 
-            string[] patterns = catalogOptions.Patterns ?? throw new ArgumentNullException(nameof(patterns));
+            string[] patterns = catalogOptions.Value.Patterns ?? throw new ArgumentNullException(nameof(patterns));
 
             EnsureDirectoryExists(path);
 

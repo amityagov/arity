@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.DirectoryCatalog", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.Hosting", "src\Arity.Hosting\Arity.Hosting.csproj", "{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.Abstractions", "src\Arity.Abstractions\Arity.Abstractions.csproj", "{70263AF5-1139-4575-A233-3BE768DBE0DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x64.Build.0 = Release|Any CPU
 		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x86.ActiveCfg = Release|Any CPU
 		{27C40717-9FED-4FFB-9675-8E6E95E5BF8F}.Release|x86.Build.0 = Release|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Debug|x64.Build.0 = Debug|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x64.Build.0 = Release|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
