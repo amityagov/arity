@@ -3,40 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Arity
 {
     public class Bootstrapper
     {
         private readonly ModuleLoader _moduleLoader;
-
         private readonly IServiceCollection _serviceCollection;
         private readonly IAssemblyCatalog _assemblyCatalog;
-        private readonly BootstrapperOptions _options;
-        private readonly string _entryModule;
+        private readonly IOptions<BootstrapperOptions> _options;
 
         private readonly Type _lifecycleListenerType = typeof(IRegisterAssemblyTypesListener);
 
         public Bootstrapper(ModuleLoader moduleLoader, IServiceCollection serviceCollection,
-            IAssemblyCatalog assemblyCatalog, BootstrapperOptions options)
+            IAssemblyCatalog assemblyCatalog, IOptions<BootstrapperOptions> options)
         {
-            var entryModule = options.EntryModule;
-
-            if (entryModule == null)
-                throw new ArgumentNullException(nameof(entryModule));
-
             _moduleLoader = moduleLoader;
             _serviceCollection = serviceCollection;
             _assemblyCatalog = assemblyCatalog;
             _options = options;
-            _entryModule = entryModule;
         }
 
         public IServiceProvider Start()
         {
             var assemblies = _assemblyCatalog.GetAssemblies();
 
-            var modules = _moduleLoader.GetSortedModules(assemblies, _entryModule);
+            var entryModule = _options.Value.EntryModule;
+            if (entryModule == null)
+                throw new ArgumentNullException(nameof(entryModule));
+
+            var modules = _moduleLoader.GetSortedModules(assemblies, entryModule);
 
             return StartInternal(_assemblyCatalog, modules);
         }
@@ -44,8 +41,9 @@ namespace Arity
         private IServiceProvider StartInternal(IAssemblyCatalog assemblyCatalog, ICollection<ModuleMetadata> modules)
         {
             var buildTimeServicesCollection = new ServiceCollection();
+            var options = _options.Value;
 
-            foreach (var action in _options.ConfigureBuildTimeServices)
+            foreach (var action in options.ConfigureBuildTimeServices)
             {
                 action(buildTimeServicesCollection);
             }

@@ -9,22 +9,14 @@ namespace Arity
     {
         private readonly ModuleLoader _moduleLoader;
         private readonly IAssemblyCatalog _assemblyCatalog;
-        private readonly BootstrapperOptions _options;
-
-        private BootstrapperFactory(ModuleLoader moduleLoader,
-            IAssemblyCatalog assemblyCatalog,
-            BootstrapperOptions options)
-        {
-            _moduleLoader = moduleLoader;
-            _assemblyCatalog = assemblyCatalog;
-            _options = options;
-        }
+        private readonly IOptions<BootstrapperOptions> _options;
 
         public static BootstrapperFactory Create(ModuleLoader moduleLoader,
             IAssemblyCatalog assemblyCatalog,
             BootstrapperOptions options)
         {
-            return new BootstrapperFactory(moduleLoader, assemblyCatalog, options);
+            return new BootstrapperFactory(moduleLoader, assemblyCatalog,
+                new OptionsWrapper<BootstrapperOptions>(options));
         }
 
         [UsedImplicitly]
@@ -34,7 +26,7 @@ namespace Arity
         {
             _moduleLoader = moduleLoader;
             _assemblyCatalog = assemblyCatalog;
-            _options = options.Value;
+            _options = options;
         }
 
         public Bootstrapper Create(IServiceCollection services)

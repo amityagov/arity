@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Arity
 {
-    [DebuggerDisplay("{" + nameof(Name) + "}")]
+    [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
     public class ModuleMetadata
     {
         public Assembly Assembly { get; }

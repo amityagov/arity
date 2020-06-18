@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,26 +8,25 @@ namespace Arity
     [PublicAPI]
     public static class ServiceCollectionServiceExtensions
     {
-        public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection, string entryModule)
+        public static IModularityConfiguration AddBootstrapper([NotNull] this IServiceCollection collection,
+            [NotNull] string entryModule,
+            IEnumerable<ModuleMetadataValidator> validators = null)
         {
-            return AddBootstrapper(collection, new BootstrapperOptions
-            {
-                EntryModule = entryModule
-            });
-        }
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
 
-        public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection,
-            BootstrapperOptions bootstrapperOptions)
-        {
+            if (entryModule == null)
+                throw new ArgumentNullException(nameof(entryModule));
+
             collection.Configure<BootstrapperOptions>(x =>
             {
-                x.EntryModule = bootstrapperOptions.EntryModule;
+                x.EntryModule = entryModule;
             });
 
             collection.AddSingleton<BootstrapperFactory>();
             collection.AddSingleton<ModuleLoader>();
 
-            foreach (var validator in bootstrapperOptions.Validators ?? Array.Empty<ModuleMetadataValidator>())
+            foreach (var validator in validators ?? Array.Empty<ModuleMetadataValidator>())
             {
                 collection.AddSingleton<ModuleMetadataValidator>(validator);
             }

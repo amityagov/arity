@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.Hosting", "src\Arity.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arity.Abstractions", "src\Arity.Abstractions\Arity.Abstractions.csproj", "{70263AF5-1139-4575-A233-3BE768DBE0DB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1C9E9C8E-580D-4044-816D-E57E1AD293B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arity.Tests", "tests\Arity.Tests\Arity.Tests.csproj", "{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,11 +73,26 @@ Global
 		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x64.Build.0 = Release|Any CPU
 		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{70263AF5-1139-4575-A233-3BE768DBE0DB}.Release|x86.Build.0 = Release|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Debug|x64.Build.0 = Debug|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Debug|x86.Build.0 = Debug|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Release|x64.ActiveCfg = Release|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Release|x64.Build.0 = Release|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE1334CE-7ECB-4822-BDB1-C47D82D6222A}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14FEA336-5FCD-4C0C-977E-A67782CB6DBD} = {1C9E9C8E-580D-4044-816D-E57E1AD293B5}
 	EndGlobalSection
 EndGlobal

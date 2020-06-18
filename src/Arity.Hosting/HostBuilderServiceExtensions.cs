@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,11 +9,11 @@ namespace Arity.Hosting
     public static class HostBuilderServiceExtensions
     {
         public static IHostBuilder UseBootstrapperFactory(this IHostBuilder builder, IAssemblyCatalog assemblyCatalog,
-            BootstrapperOptions options)
+            BootstrapperOptions options, IEnumerable<ModuleMetadataValidator> validators = null)
         {
             return builder.UseServiceProviderFactory(context =>
             {
-                var moduleLoader = new ModuleLoader(options.Validators);
+                var moduleLoader = new ModuleLoader(validators);
 
                 options.ConfigureBuildTimeServices.Add(collection => collection.AddSingleton(context.HostingEnvironment));
                 options.ConfigureBuildTimeServices.Add(collection => collection.AddSingleton(context.Configuration));
