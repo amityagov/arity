@@ -7,23 +7,22 @@ namespace Arity
     [PublicAPI]
     public static class ServiceCollectionServiceExtensions
     {
-        public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection, IAssemblyCatalog assemblyCatalog, string entryModule)
+        public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection, string entryModule)
         {
-            return AddBootstrapper(collection, assemblyCatalog, new BootstrapperOptions
+            return AddBootstrapper(collection, new BootstrapperOptions
             {
                 EntryModule = entryModule
             });
         }
 
         public static IModularityConfiguration AddBootstrapper(this IServiceCollection collection,
-             IAssemblyCatalog assemblyCatalog, BootstrapperOptions bootstrapperOptions)
+            BootstrapperOptions bootstrapperOptions)
         {
             collection.Configure<BootstrapperFactoryOptions>(x =>
             {
                 x.EntryModule = bootstrapperOptions.EntryModule;
             });
 
-            collection.AddSingleton<IAssemblyCatalog>(assemblyCatalog);
             collection.AddSingleton<BootstrapperFactory>();
             collection.AddSingleton<ModuleLoader>();
 

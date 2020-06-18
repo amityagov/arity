@@ -6,8 +6,8 @@ namespace Arity.Hosting
     [PublicAPI]
     public static class HostBuilderServiceExtensions
     {
-        public static IHostBuilder UseBootstrapperFactory(this IHostBuilder builder,
-            BootstrapperOptions bootstrapperOptions, IAssemblyCatalog assemblyCatalog)
+        public static IHostBuilder UseBootstrapperFactory(this IHostBuilder builder, IAssemblyCatalog assemblyCatalog,
+            BootstrapperOptions bootstrapperOptions)
         {
             return builder.UseServiceProviderFactory(context =>
             {
