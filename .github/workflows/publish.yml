@@ -2,7 +2,8 @@ name: .NET Core
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
 
 jobs:
   build:
@@ -14,33 +15,33 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    
+
     - name: Install dependencies
       run: dotnet restore
-      
+
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    
+
     - name: pack Arity.Abstractions
-      run: dotnet pack -o ./nupkg .\src\Arity.Abstractions\Arity.Abstractions.csproj
-      
+      run: dotnet pack -o ./nupkg ./src/Arity.Abstractions/Arity.Abstractions.csproj
+
     - name: pack Arity
-      run: dotnet pack -o ./nupkg .\src\Arity\Arity.csproj
-    
+      run: dotnet pack -o ./nupkg ./src/Arity/Arity.csproj
+
     - name: pack Arity.DirectoryCatalog
-      run: dotnet pack -o ./nupkg .\src\Arity.DirectoryCatalog\Arity.DirectoryCatalog.csproj
-      
+      run: dotnet pack -o ./nupkg ./src/Arity.DirectoryCatalog/Arity.DirectoryCatalog.csproj
+
     - name: pack Arity.Hosting
-      run: dotnet pack -o ./nupkg .\src\Arity.Hosting\Arity.Hosting.csproj
-    
+      run: dotnet pack -o ./nupkg ./src/Arity.Hosting/Arity.Hosting.csproj
+
     - name: push Arity.Abstractions
       run: dotnet nuget push -k ${{ secrets.NUGET_KEY }} --skip-duplicate -s https://nuget.org ./nupkg/Arity.Abstractions.*.nupkg
-    
+
     - name: push Arity
       run: dotnet nuget push -k ${{ secrets.NUGET_KEY }} --skip-duplicate -s https://nuget.org ./nupkg/Arity.*.nupkg
-    
+
     - name: push Arity.DirectoryCatalog
       run: dotnet nuget push -k ${{ secrets.NUGET_KEY }} --skip-duplicate -s https://nuget.org ./nupkg/Arity.DirectoryCatalog.*.nupkg
-    
+
     - name: push Arity.Hosting
       run: dotnet nuget push -k ${{ secrets.NUGET_KEY }} --skip-duplicate -s https://nuget.org ./nupkg/Arity.Hosting.*.nupkg
