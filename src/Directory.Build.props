@@ -10,8 +10,8 @@
     <PropertyGroup>
         <NeutralLanguage>en-US</NeutralLanguage>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/amityagov/Arity</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/amityagov/Arity.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/amityagov/arity</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/amityagov/arity.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
