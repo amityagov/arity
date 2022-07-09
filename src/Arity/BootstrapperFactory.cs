@@ -12,8 +12,7 @@ namespace Arity
         private readonly IOptions<BootstrapperOptions> _options;
 
         public static BootstrapperFactory Create(ModuleLoader moduleLoader,
-            IAssemblyCatalog assemblyCatalog,
-            BootstrapperOptions options)
+            IAssemblyCatalog assemblyCatalog, BootstrapperOptions options)
         {
             return new BootstrapperFactory(moduleLoader, assemblyCatalog,
                 new OptionsWrapper<BootstrapperOptions>(options));

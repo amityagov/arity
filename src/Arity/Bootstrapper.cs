@@ -29,11 +29,7 @@ namespace Arity
         {
             var assemblies = _assemblyCatalog.GetAssemblies();
 
-            var entryModule = _options.Value.EntryModule;
-            if (entryModule == null)
-                throw new ArgumentNullException(nameof(entryModule));
-
-            var modules = _moduleLoader.GetSortedModules(assemblies, entryModule);
+            var modules = _moduleLoader.GetSortedModules(assemblies, _options.Value.EntryModules);
 
             return StartInternal(_assemblyCatalog, modules);
         }
@@ -48,7 +44,8 @@ namespace Arity
                 action(buildTimeServicesCollection);
             }
 
-            var lifecycleListenerTypes = LoadLifecycleListeners(modules.Select(x => x.Type.Assembly).Distinct().ToArray());
+            var lifecycleListenerTypes =
+                LoadLifecycleListeners(modules.Select(x => x.Type.Assembly).Distinct().ToArray());
 
             foreach (var module in modules)
             {
@@ -89,8 +86,8 @@ namespace Arity
             return _serviceCollection.BuildServiceProvider(validateScopes: true);
         }
 
-        private static void RunRegistrations(IServiceCollection targetServiceCollection, ICollection<ModuleMetadata> modules,
-            IServiceProvider serviceProvider, string phase)
+        private static void RunRegistrations(IServiceCollection targetServiceCollection,
+            ICollection<ModuleMetadata> modules, IServiceProvider serviceProvider, string phase)
         {
             var preBuildLifecycleListeners = serviceProvider.GetServices<IRegisterAssemblyTypesListener>().ToArray();
 
@@ -101,7 +98,8 @@ namespace Arity
 
                 foreach (var lifecycleListener in preBuildLifecycleListeners)
                 {
-                    lifecycleListener.OnLoad(new ModuleLoadPhase(targetServiceCollection, assembly, assemblyModules, phase));
+                    lifecycleListener.OnLoad(new ModuleLoadPhase(targetServiceCollection, assembly, assemblyModules,
+                        phase));
                 }
             }
         }

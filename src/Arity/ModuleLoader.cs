@@ -15,13 +15,29 @@ namespace Arity
         }
 
         public ICollection<ModuleMetadata> GetSortedModules(ICollection<Assembly> assemblies,
-            string entryModule)
+            ICollection<string> entryModules)
         {
+            if (entryModules == null || entryModules.Count == 0)
+                throw new ArgumentNullException(nameof(entryModules));
+
+            ModuleMetadata startModuleMetadata = null;
+            string entryModule;
+
+            if (entryModules.Count > 1)
+            {
+                startModuleMetadata = new ModuleMetadata(typeof(EntryModule), nameof(EntryModule),
+                    entryModules.ToArray(), new Dictionary<string, object>());
+
+                entryModule = startModuleMetadata.Name;
+            }
+            else
+            {
+                entryModule = entryModules.First();
+            }
+
             var moduleMetadataCollection = new List<ModuleMetadata>();
 
             var names = new HashSet<string>();
-
-            ModuleMetadata startModuleMetadata = null;
 
             foreach (var assembly in assemblies)
             {
@@ -38,14 +54,21 @@ namespace Arity
                             moduleAttribute.Apply(metadata);
                         }
 
+                        if (metadata.Name == null)
+                        {
+                            throw new InvalidOperationException(
+                                $"Failed to resolve module name for module type {module.Type.FullName}");
+                        }
+
                         if (names.Contains(metadata.Name))
                         {
-                            throw new InvalidOperationException($"Module with name \"{metadata.Name}\" already exists.");
+                            throw new InvalidOperationException(
+                                $"Module with name \"{metadata.Name}\" already exists.");
                         }
 
                         names.Add(metadata.Name);
 
-                        if (entryModule == metadata.Name)
+                        if (startModuleMetadata == null && entryModule == metadata.Name)
                         {
                             startModuleMetadata = metadata;
                         }
@@ -149,7 +172,8 @@ namespace Arity
                         }
                         else
                         {
-                            throw new InvalidOperationException($"Dependency {dependency} not found for {metadata.Name}.");
+                            throw new InvalidOperationException(
+                                $"Dependency {dependency} not found for {metadata.Name}.");
                         }
                     }
 
@@ -158,6 +182,10 @@ namespace Arity
                     result.Add(metadata);
                 }
             }
+        }
+
+        private class EntryModule
+        {
         }
     }
 }
