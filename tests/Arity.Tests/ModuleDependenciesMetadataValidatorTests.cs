@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Xunit;
 
@@ -38,6 +39,12 @@ namespace Arity.Tests
 
             yield return new object[]
             {
+                typeof(ValidModuleWithHostEnvironment),
+                true
+            };
+
+            yield return new object[]
+            {
                 typeof(InvalidModuleWithMicrosoftOptions),
                 false
             };
@@ -52,6 +59,14 @@ namespace Arity.Tests
             public ValidModuleWithConfiguration(IConfiguration configuration)
             {
                 _ = configuration;
+            }
+        }
+
+        private class ValidModuleWithHostEnvironment
+        {
+            public ValidModuleWithHostEnvironment(IHostEnvironment environment)
+            {
+                _ = environment;
             }
         }
 
