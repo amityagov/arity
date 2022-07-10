@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Arity.Tests.Modules;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Xunit;
@@ -9,7 +12,7 @@ namespace Arity.Tests
     public class BootstrapperTests
     {
         [Fact]
-        public void SingleEntryModule()
+        public void Start_SingleEntryModule_EntryModuleAndAllDepsCalled()
         {
             Module1.Called = false;
             Module2.Called = false;
@@ -38,7 +41,7 @@ namespace Arity.Tests
         }
 
         [Fact]
-        public void MultiplyEntryModule()
+        public void Start_MultiplyEntryModule_AllEntryModulesAndAllDepsCalled()
         {
             Module1.Called = false;
             Module2.Called = false;
@@ -67,49 +70,88 @@ namespace Arity.Tests
             Assert.True(Module3.Called);
             Assert.True(Module4.Called);
         }
-    }
 
-    [Module(nameof(Module1), Dependencies = new[] { nameof(Module2) })]
-    public class Module1 : IServiceCollectionModule
-    {
-        public static bool Called;
-
-        public void Build(IServiceCollection collection)
+        [Fact]
+        public void Start_ConfigureBootstrapper_EntryModulesOverridenFromConfiguration()
         {
-            Called = true;
+            Module1.Called = false;
+            Module4.Called = false;
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<IAssemblyCatalog>(new StaticAssemblyCatalog(typeof(Module1).Assembly));
+
+            var configuration = new ConfigurationManager();
+
+            configuration.AddInMemoryCollection(new[]
+            {
+                new KeyValuePair<string, string>("Modularity:EntryModules:0", "Module4")
+            });
+
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddBootstrapper(new[] { nameof(Module1) });
+            serviceCollection.ConfigureBootstrapper();
+
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            var bootstrapperFactory = serviceProvider.GetRequiredService<BootstrapperFactory>();
+
+            Bootstrapper bootstrapper = bootstrapperFactory.Create(serviceCollection);
+            bootstrapper.Start();
+
+            Assert.True(Module4.Called);
+            Assert.False(Module1.Called);
         }
-    }
 
-    [Module(nameof(Module2))]
-    public class Module2 : IServiceCollectionModule
-    {
-        public static bool Called;
-
-        public void Build(IServiceCollection collection)
+        [Fact]
+        public void Start_ModuleOptionsResolved()
         {
-            Called = true;
+            ModuleWithOptions.Called = false;
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<IAssemblyCatalog>(new StaticAssemblyCatalog(typeof(Module1).Assembly));
+
+            serviceCollection.AddBootstrapper(new[] { nameof(ModuleWithOptions) });
+
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            var bootstrapperFactory = serviceProvider.GetRequiredService<BootstrapperFactory>();
+
+            Bootstrapper bootstrapper = bootstrapperFactory.Create(serviceCollection);
+            bootstrapper.Start();
+
+            Assert.True(ModuleWithOptions.Called);
+            Assert.NotNull(ModuleWithOptions.Options);
+            Assert.True(ModuleWithOptions.Options.Disposed);
+
+            Assert.Throws<ObjectDisposedException>(() => _ = ModuleWithOptions.Options.Value);
         }
-    }
 
-    [Module(nameof(Module3), Dependencies = new[] { nameof(Module4) })]
-    public class Module3 : IServiceCollectionModule
-    {
-        public static bool Called;
-
-        public void Build(IServiceCollection collection)
+        [Fact]
+        public void Start_ListenerInvoked()
         {
-            Called = true;
+            TestListener.RegisterCalledTimes = 0;
+
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton<IAssemblyCatalog>(new StaticAssemblyCatalog(typeof(Module1).Assembly));
+
+            serviceCollection.AddBootstrapper(new[] { nameof(Module1) });
+
+            ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            var bootstrapperFactory = serviceProvider.GetRequiredService<BootstrapperFactory>();
+
+            Bootstrapper bootstrapper = bootstrapperFactory.Create(serviceCollection);
+            bootstrapper.Start();
+
+            Assert.Equal(1, TestListener.RegisterCalledTimes);
         }
-    }
 
-    [Module(nameof(Module4))]
-    public class Module4 : IServiceCollectionModule
-    {
-        public static bool Called;
-
-        public void Build(IServiceCollection collection)
+        public class TestListener : RegisterAssemblyTypesListener
         {
-            Called = true;
+            public static int RegisterCalledTimes;
+
+            protected override void Register(IServiceCollection serviceCollection, Assembly assembly,
+                ModuleMetadata[] modules)
+            {
+                RegisterCalledTimes++;
+            }
         }
     }
 }

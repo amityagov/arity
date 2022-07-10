@@ -57,20 +57,15 @@ namespace Arity
                 buildTimeServicesCollection.AddSingleton(_lifecycleListenerType, lifecycleListenerType);
             }
 
+            buildTimeServicesCollection.AddOptions();
+            buildTimeServicesCollection.AddSingleton(typeof(IModuleOptions<>), typeof(ModuleOptions<>));
             buildTimeServicesCollection.AddSingleton(assemblyCatalog);
-
-            var preBuildServices = buildTimeServicesCollection.BuildServiceProvider();
-
-            using (preBuildServices)
-            {
-                RunRegistrations(buildTimeServicesCollection, modules, preBuildServices, ModuleLoadPhase.PreBuild);
-            }
 
             var buildTimeServices = buildTimeServicesCollection.BuildServiceProvider();
 
             using (buildTimeServices)
             {
-                RunRegistrations(_serviceCollection, modules, buildTimeServices, ModuleLoadPhase.Build);
+                RunListeners(_serviceCollection, modules, buildTimeServices);
 
                 foreach (var module in modules)
                 {
@@ -86,8 +81,8 @@ namespace Arity
             return _serviceCollection.BuildServiceProvider(validateScopes: true);
         }
 
-        private static void RunRegistrations(IServiceCollection targetServiceCollection,
-            ICollection<ModuleMetadata> modules, IServiceProvider serviceProvider, string phase)
+        private static void RunListeners(IServiceCollection targetServiceCollection,
+            IEnumerable<ModuleMetadata> modules, IServiceProvider serviceProvider)
         {
             var preBuildLifecycleListeners = serviceProvider.GetServices<IRegisterAssemblyTypesListener>().ToArray();
 
@@ -98,8 +93,8 @@ namespace Arity
 
                 foreach (var lifecycleListener in preBuildLifecycleListeners)
                 {
-                    lifecycleListener.OnLoad(new ModuleLoadPhase(targetServiceCollection, assembly, assemblyModules,
-                        phase));
+                    lifecycleListener.OnLoad(new AssemblyModuleLoadArgs(targetServiceCollection, assembly,
+                        assemblyModules));
                 }
             }
         }

@@ -11,7 +11,10 @@ namespace Arity
 
         public ModuleLoader(IEnumerable<ModuleMetadataValidator> validators)
         {
-            _validators = validators?.ToArray() ?? Array.Empty<ModuleMetadataValidator>();
+            _validators = (ICollection<ModuleMetadataValidator>)validators?.ToList() ??
+                          Array.Empty<ModuleMetadataValidator>();
+
+            _validators.Add(new ModuleDependenciesMetadataValidator());
         }
 
         public ICollection<ModuleMetadata> GetSortedModules(ICollection<Assembly> assemblies,

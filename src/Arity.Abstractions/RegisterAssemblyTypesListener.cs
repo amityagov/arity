@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Arity
 {
+    [PublicAPI]
     public abstract class RegisterAssemblyTypesListener : IRegisterAssemblyTypesListener
     {
         private readonly HashSet<AssemblyMarker> _assemblyMarkers = new HashSet<AssemblyMarker>();
 
-        public void OnLoad(ModuleLoadPhase value)
+        public void OnLoad(AssemblyModuleLoadArgs value)
         {
-            var (serviceCollection, assembly, modules, phase) = value;
+            var (serviceCollection, assembly, modules) = value;
 
-            var marker = new AssemblyMarker(assembly.FullName, GetType(), phase);
+            var marker = new AssemblyMarker(assembly.FullName, GetType());
 
             if (_assemblyMarkers.Contains(marker))
             {
@@ -22,74 +24,42 @@ namespace Arity
 
             _assemblyMarkers.Add(marker);
 
-            Register(serviceCollection, assembly, modules, phase);
+            Register(serviceCollection, assembly, modules);
         }
 
-        protected virtual void Register(IServiceCollection serviceCollection, Assembly assembly, ModuleMetadata[] modules,
-            string phase)
-        {
-            if (phase == ModuleLoadPhase.PreBuild)
-            {
-                RegisterPreBuildPhase(serviceCollection, assembly, modules);
-            }
-
-            if (phase == ModuleLoadPhase.Build)
-            {
-                RegisterBuildPhase(serviceCollection, assembly, modules);
-            }
-        }
-
-        protected virtual void RegisterPreBuildPhase(IServiceCollection serviceCollection, Assembly assembly, ModuleMetadata[] modules)
-        {
-        }
-
-        protected virtual void RegisterBuildPhase(IServiceCollection serviceCollection, Assembly assembly, ModuleMetadata[] modules)
+        protected virtual void Register(IServiceCollection serviceCollection, Assembly assembly,
+            ModuleMetadata[] modules)
         {
         }
 
         private class AssemblyMarker
         {
-            public string AssemblyName { get; }
+            private readonly string _assemblyName;
 
-            public Type RegistrarType { get; }
+            private readonly Type _registrarType;
 
-            public string Phase { get; }
-
-            public AssemblyMarker(string assemblyName, Type registrarType, string phase)
+            public AssemblyMarker(string assemblyName, Type registrarType)
             {
-                AssemblyName = assemblyName;
-                RegistrarType = registrarType;
-                Phase = phase;
+                _assemblyName = assemblyName;
+                _registrarType = registrarType;
             }
 
             private bool Equals(AssemblyMarker other)
             {
-                return string.Equals(AssemblyName, other.AssemblyName) && RegistrarType == other.RegistrarType && string.Equals(Phase, other.Phase);
+                return _assemblyName == other._assemblyName && _registrarType == other._registrarType;
             }
 
             public override bool Equals(object obj)
             {
-                if (ReferenceEquals(null, obj))
-                    return false;
-
-                if (ReferenceEquals(this, obj))
-                    return true;
-
-                if (obj.GetType() != GetType())
-                    return false;
-
+                if (ReferenceEquals(null, obj)) return false;
+                if (ReferenceEquals(this, obj)) return true;
+                if (obj.GetType() != GetType()) return false;
                 return Equals((AssemblyMarker)obj);
             }
 
             public override int GetHashCode()
             {
-                unchecked
-                {
-                    var hashCode = AssemblyName != null ? AssemblyName.GetHashCode() : 0;
-                    hashCode = (hashCode * 397) ^ (RegistrarType != null ? RegistrarType.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ (Phase != null ? Phase.GetHashCode() : 0);
-                    return hashCode;
-                }
+                return HashCode.Combine(_assemblyName, _registrarType);
             }
         }
     }
