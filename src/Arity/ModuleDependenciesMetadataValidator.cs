@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Arity
 {
@@ -15,6 +16,7 @@ namespace Arity
         {
             _validParameterTypes.Add(typeof(IModuleOptions<>));
             _validParameterTypes.Add(typeof(IConfiguration));
+            _validParameterTypes.Add(typeof(IHostEnvironment));
         }
 
         public override void Validate(ModuleMetadata metadata, IDictionary<string, ModuleMetadata> descriptorMap,
